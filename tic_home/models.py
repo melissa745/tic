@@ -18,12 +18,42 @@ name_validator = RegexValidator(r"^[A-Za-záéíóúÁÉÍÓÚÑñ' -]+$", "El n
 itinerary_validator = RegexValidator(r'^[A-Za-záéíóúÁÉÍÓÚÑñ ]+$', 'El itinerario debe contener solo letras.')
 
 class User(models.Model):
+   from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator, EmailValidator
+
+# Validador para la cédula (10 dígitos)
+ci_validator = RegexValidator(r'^\d{10}$', 'La cédula de identidad debe contener exactamente 10 números.')
+
+# Validador para nombres y apellidos (letras, espacios, apóstrofes y guiones)
+name_validator = RegexValidator(r"^[A-Za-záéíóúÁÉÍÓÚÑñ' -]+$", "El nombre debe contener solo letras, apóstrofes o guiones.")
+
+class User(models.Model):
+    ITINERARY_CHOICES = [
+        ('software', 'Ingeniería de Software'),
+        ('inteligentes', 'Sistemas Inteligentes'),
+        ('aplicada', 'Computación Aplicada'),
+    ]
+    CYCLE_CHOICES = [(str(i), str(i)) for i in range(1, 10)]  # Crea opciones del 1 al 9
+
     ci = models.CharField(max_length=10, unique=True, validators=[ci_validator])  
     first_name = models.CharField(max_length=50, validators=[name_validator]) 
     last_name = models.CharField(max_length=50, validators=[name_validator])  
-    cycle = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(9)])  # Evita valores fuera de rango 
-    itinerary = models.CharField(max_length=50, validators=[itinerary_validator])  
+    cycle = models.CharField(max_length=2, choices=CYCLE_CHOICES)
+    itinerary = models.CharField(max_length=20, choices=ITINERARY_CHOICES)  # Campo de selección
     email = models.EmailField(unique=True, validators=[EmailValidator()])  
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+    
+    def has_completed_surveys(self):
+        """Verifica si el usuario ha completado ambas encuestas."""
+        completed_surveys = self.survey_set.filter(completed=True).values_list('survey_type', flat=True)
+        return set(completed_surveys) == {'pre', 'post'}
+
+    class Meta:
+        verbose_name = "Usuario"
+        verbose_name_plural = "Usuarios"
+
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
