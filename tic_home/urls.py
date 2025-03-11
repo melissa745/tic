@@ -1,11 +1,12 @@
 from django.urls import path
-from .views import register_user 
+from .views import home,  formUser
 from django.shortcuts import render
 
 
 urlpatterns = [
     #path('',homeView, name='home'),
-    path('', register_user, name='register'),  # Cambia 'homeView' si no existe
+    path('', home, name='home'), 
+    path('User', formUser, name='formUser'),
 
 ]
 
