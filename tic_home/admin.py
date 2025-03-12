@@ -1,11 +1,10 @@
 from django.contrib import admin
-from .models import User, Survey, Question, Answer
+from .models import Estudiante, Survey, Question, Answer
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('ci', 'first_name', 'last_name', 'cycle', 'email')
-    search_fields = ('ci', 'first_name', 'last_name', 'email')
-    list_filter = ('cycle',)
+@admin.register(Estudiante)
+class EstudianteAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'ci', 'cycle', 'itinerary', 'email')
+    search_fields = ('first_name', 'last_name', 'ci', 'email')
 
 @admin.register(Survey)
 class SurveyAdmin(admin.ModelAdmin):
@@ -14,12 +13,11 @@ class SurveyAdmin(admin.ModelAdmin):
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('text', 'survey_type')
+    list_display = ('text', 'survey_type', 'order')
+    list_filter = ('survey_type',)
+    # Elimina cualquier método get_survey_type que estés intentando usar
+    # Ya no es necesario porque survey_type es un campo directo ahora
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ('get_user', 'question', 'response')
-    
-    def get_user(self, obj):
-        return obj.survey.user
-    get_user.short_description = 'User'
+    list_display = ('survey', 'question', 'response')

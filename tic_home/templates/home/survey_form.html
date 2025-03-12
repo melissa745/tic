@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% if survey_type == 'pre' %}
+        Encuesta I | Mi Aplicación
+      {% elif survey_type == 'post' %}
+        Encuesta II | Mi Aplicación
+      {% else %}
+        Encuesta | Mi Aplicación
+      {% endif %}
+    </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="text-gray-100">
+    {% include "components/userPanel.html" %}
+    
+    <div class="container mx-auto flex justify-center mb-6">
+      {% include "components/header.html" %}
+    </div>
+    <div class="flex flex-col justify-center items-center">
+
+
+      <div class="w-full max-w-2xl bg-gray-700 shadow-lg rounded-2xl p-8">
+        <h2 class="text-2xl font-semibold text-center mb-6 text-blue-400">
+          {% if survey_type == 'pre' %}
+            Encuesta Inicial
+          {% elif survey_type == 'post' %}
+            Encuesta Final
+          {% else %}
+            Encuesta
+          {% endif %}
+        </h2>
+
+        <form method="POST" class="space-y-6">
+          {% csrf_token %}
+          {% for question in questions %}
+          <div class="flex flex-col">
+            <label class="text-lg font-medium mb-2">{{ question.text }}</label>
+            <input
+              type="text"
+              name="question_{{ question.id }}"
+              placeholder="Tu respuesta aquí..."
+              class="border border-gray-400 bg-gray-800 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              required
+            />
+          </div>
+          {% endfor %}
+
+          <div class="flex justify-between items-center mt-6">
+            <button
+              type="submit"
+              class="w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-6 py-3 transition-all"
+            >
+              Enviar respuestas
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

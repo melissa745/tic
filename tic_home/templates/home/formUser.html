@@ -6,113 +6,131 @@
     <title>Registro | Mi Aplicación</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-100">
-    <div class="flex items-center justify-center min-h-screen">
-      <form class="max-w-md mx-auto" method="POST" action="{% url 'formUser' %}">
-        {% csrf_token %}
-        <div class="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="first_name"
-            id="first_name"
-            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-          />
-          <label
-            for="first_name"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600"
-          >
-            Nombre
-          </label>
-        </div>
+  <body class="text-white">
+    <div class="min-h-screen flex flex-col justify-center items-center px-4">
 
-        <div class="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="last_name"
-            id="last_name"
-            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-          />
-          <label
-            for="last_name"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600"
-          >
-            Apellido
-          </label>
-        </div>
+      <div class="container mx-auto flex items-center justify-around">
+        {% include "components/header.html" %}
+      </div>
+      
+      <!-- Contenedor principal -->
+      <div class="bg-gray-800 shadow-lg rounded-2xl p-8 w-full max-w-lg">
+        
+        <h2 class="text-center text-2xl font-semibold text-blue-400 mb-6">
+          Registro de Estudiante
+        </h2>
 
-        <div class="relative z-0 w-full mb-5 group">
-          <input
-            type="text"
-            name="ci"
-            id="ci"
-            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-          />
-          <label
-            for="ci"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600"
-          >
-            Cédula
-          </label>
-        </div>
+        <form method="POST" action="{% url 'formUser' %}" class="space-y-6">
+          {% csrf_token %}
 
-        <div class="relative z-0 w-full mb-5 group">
-          <select name="cycle" id="cycle">
-            {% for value, label in form.fields.cycle.choices %}
-            <option value="{{ value }}">{{ label }}</option>
-            {% endfor %}
-          </select>
-          <label
-            for="cycle"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600"
-          >
-            Ciclo
-          </label>
-        </div>
+          <div class="space-y-4">
+            <!-- Nombre -->
+            <div>
+              <label
+                for="first_name"
+                class="block text-sm font-medium text-gray-300"
+                >Nombre</label
+              >
+              <input
+                type="text"
+                name="first_name"
+                id="first_name"
+                required
+                class="mt-1 block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-200"
+              />
+            </div>
 
-        <div class="relative z-0 w-full mb-5 group">
-          <select name="itinerary" id="itinerary">
-            {% for value, label in form.fields.itinerary.choices %}
-            <option value="{{ value }}">{{ label }}</option>
-            {% endfor %}
-          </select>
-          <label
-            for="itinerary"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600"
-          >
-            Itinerario
-          </label>
-        </div>
+            <!-- Apellido -->
+            <div>
+              <label
+                for="last_name"
+                class="block text-sm font-medium text-gray-300"
+                >Apellido</label
+              >
+              <input
+                type="text"
+                name="last_name"
+                id="last_name"
+                required
+                class="mt-1 block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-200"
+              />
+            </div>
 
-        <div class="relative z-0 w-full mb-5 group">
-          <input
-            type="email"
-            name="email"
-            id="email"
-            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            required
-          />
-          <label
-            for="email"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600"
-          >
-            Correo electrónico
-          </label>
-        </div>
+            <!-- Cédula -->
+            <div>
+              <label for="ci" class="block text-sm font-medium text-gray-300"
+                >Cédula</label
+              >
+              <input
+                type="text"
+                name="ci"
+                id="ci"
+                required
+                class="mt-1 block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-200"
+              />
+            </div>
 
-        <button
-          type="submit"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Registrar
-        </button>
-      </form>
+            <!-- Ciclo -->
+            <div>
+              <label for="cycle" class="block text-sm font-medium text-gray-300"
+                >Ciclo</label
+              >
+              <select
+                name="cycle"
+                id="cycle"
+                class="mt-1 block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-200"
+              >
+                {% for value, label in form.fields.cycle.choices %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Itinerario -->
+            <div>
+              <label
+                for="itinerary"
+                class="block text-sm font-medium text-gray-300"
+                >Itinerario</label
+              >
+              <select
+                name="itinerary"
+                id="itinerary"
+                class="mt-1 block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-200"
+              >
+                {% for value, label in form.fields.itinerary.choices %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Correo Electrónico -->
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-300"
+                >Correo Electrónico</label
+              >
+              <input
+                type="email"
+                name="email"
+                id="email"
+                required
+                class="mt-1 block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-200"
+              />
+            </div>
+          </div>
+
+          <!-- Botones -->
+          <div class="flex flex-col sm:flex-row gap-4">
+            <button
+              type="submit"
+              class="w-full bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 text-lg"
+            >
+              Registrar
+            </button>
+
+          </div>
+        </form>
+      </div>
     </div>
   </body>
 </html>

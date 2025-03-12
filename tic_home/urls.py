@@ -1,12 +1,9 @@
 from django.urls import path
-from .views import home,  formUser
-from django.shortcuts import render
-
+from . import views
 
 urlpatterns = [
-    #path('',homeView, name='home'),
-    path('', home, name='home'), 
-    path('User', formUser, name='formUser'),
-
+    path('', views.home, name='home'),
+    path('registro/', views.formUser, name='formUser'),
+    path('encuesta/<str:survey_type>/', views.survey_view, name='survey_view'),
+    path('seleccionar-encuesta/', views.select_survey, name='select_survey'),
 ]
-

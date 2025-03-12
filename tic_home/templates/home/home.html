@@ -6,22 +6,27 @@
     <title>Bienvenido | Mi Aplicación</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-100">
-    <div class="flex items-center justify-center min-h-screen">
-      <div class="bg-white p-10 rounded-2xl shadow-lg max-w-lg text-center">
-        <h1 class="text-3xl font-bold text-gray-800">
-          ¡Bienvenido a Nuestra Aplicación!
-        </h1>
-        <p class="text-gray-600 mt-4">
-          Aquí podrás gestionar tu información de manera eficiente. Regístrate
-          ahora y empieza a explorar nuestras funcionalidades.
-        </p>
-        <a href="{% url 'formUser' %}"
-        class="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
-      >
-        Empezar
-      </a>
-      
+  <body>
+    <div class="justify-center items-center min-h-screen">
+      <div class="container mx-auto flex items-center justify-around">
+        {% include "components/header.html" %}
+      </div>
+      <div class="flex items-center justify-center ">
+        <div class="p-10 rounded-2xl shadow-lg max-w-lg text-center bg-gray-100">
+          <h1 class="text-3xl font-bold text-gray-800">
+            ¡Bienvenido a Nuestra Aplicación!
+          </h1>
+          <p class="text-gray-600 mt-4">
+            Aquí podrás gestionar tu información de manera eficiente. Regístrate
+            ahora y empieza a explorar nuestras funcionalidades.
+          </p>
+          <a
+            href="{% url 'formUser' %}"
+            class="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
+          >
+            Empezar
+          </a>
+        </div>
       </div>
     </div>
   </body>
