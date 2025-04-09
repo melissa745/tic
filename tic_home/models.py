@@ -16,12 +16,20 @@ class Estudiante(models.Model):  # Cambié el nombre de User a Estudiante para e
     ]
     CYCLE_CHOICES = [(str(i), str(i)) for i in range(1, 10)]
 
+    TIPO_EXPERIENCIA_CHOICES = [
+        ('rv_no_inmersiva', 'RV No Inmersiva'),
+        ('semi_inmersiva', 'Semi Inmersiva'),
+        ('inmersiva', 'Inmersiva'),
+    ]
+
     ci = models.CharField(max_length=10, unique=True, validators=[ci_validator])  
     first_name = models.CharField(max_length=50, validators=[name_validator]) 
     last_name = models.CharField(max_length=50, validators=[name_validator])  
     cycle = models.CharField(max_length=2, choices=CYCLE_CHOICES)
     itinerary = models.CharField(max_length=20, choices=ITINERARY_CHOICES)
     email = models.EmailField(unique=True, validators=[EmailValidator()])  
+    tipo_experiencia = models.CharField(max_length=20, choices=TIPO_EXPERIENCIA_CHOICES, null=True, blank=True)
+
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -73,4 +81,4 @@ class Answer(models.Model):
 
     def __str__(self):
         return f"Resp: {self.response} ({self.survey.get_survey_type_display()} - {self.survey.user.first_name})"
-
+    

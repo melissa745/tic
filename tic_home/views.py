@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.contrib import messages
 from .models import Estudiante, Survey, Question, Answer
 from .forms import EstudianteForm, AnswerForm
+import random
+from django.core.validators import EmailValidator
 
 def home(request):
     return render(request, "home/home.html")
@@ -120,3 +122,66 @@ def select_survey(request):
     except Estudiante.DoesNotExist:
         messages.error(request, "Usuario no encontrado")
         return redirect('home')
+
+
+# ENCUESTA PARA VERIFICAR SI EL USUARIO ES ANINIMO O NO
+
+def aninomo(request):
+    return render (request, 'home/anonimo.html')
+
+def procesar_anonimo(request):
+    if request.method == 'POST':
+        opcion = request.POST.get('anonimo')
+        if opcion == 'si':
+            request.session['anonimo'] = True
+            
+            count = Estudiante.objects.filter(first_name__startswith="Anonimo").count() + 1
+
+            # Generar campos válidos
+            ci = f"{random.randint(1000000000, 9999999999)}"  # 10 dígitos
+            first_name = f"Anonimo"  # sin números, válido
+            last_name = f"Anonimo"  # como está validado, lo mejor es dejarlo en texto válido
+            email = f"anonimo{count}@anonimo.com"
+
+            estudiante = Estudiante.objects.create(
+                ci=ci,
+                first_name=first_name,
+                last_name=last_name,
+                cycle=str(random.randint(1, 9)),  # entre '1' y '9'
+                itinerary='software',  # opción válida de ITINERARY_CHOICES
+                email=email,
+            )
+
+            request.session['estudiante_id'] = estudiante.id
+
+            # Crear encuesta tipo "pre"
+            Survey.objects.create(user=estudiante, survey_type='pre')
+
+            return redirect('seleccionar_tipo_experiencia')
+        else:
+            request.session['anonimo'] = False
+            return redirect('formUser')
+        
+# SELECCIONAR TIPO DE EXPERIENCIA 
+def seleccionar_tipo_experiencia(request):
+    return render(request, 'home/seleccionar_tipo.html')
+
+def guardar_tipo_experiencia(request):
+    if request.method == 'POST':
+        tipo = request.POST.get("tipo")
+        request.session["tipo_experiencia"] = tipo  # Guardar en la sesión si es necesario
+
+        # Verificar si el usuario es anónimo
+        if request.session.get('anonimo'):
+            # Recuperar el usuario anónimo desde la sesión
+            estudiante_id = request.session.get('estudiante_id')
+            estudiante = Estudiante.objects.get(id=estudiante_id)
+
+            # Actualizar el tipo de experiencia del usuario anónimo
+            estudiante.tipo_experiencia = tipo
+            estudiante.save()
+
+        # Redirigir a la encuesta 'pre'
+        return redirect('survey_view', survey_type='pre')  # O la página de tu preferencia
+
+
