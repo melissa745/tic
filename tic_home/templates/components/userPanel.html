@@ -1,15 +1,18 @@
-<nav class="bg-gray-800 p-4 text-white w-full">
+{# Este componente se ha dejado vacío intencionadamente para no mostrar información del usuario en el encabezado. #}
+
+<div class="bg-white p-4 text-gray-600 w-full rounded-2xl">
     <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-lg font-semibold">Encuestas</h1>
-      
-      <div>
-        {% if estudiante %}
-          <span class="mr-4">Bienvenido, {{ estudiante.first_name }}</span>
+      <h1 class="text-lg font-semibold">
+        {% if request.session.estudiante_id and estudiante %}
+          {% if estudiante.is_anonymous %}
+              Anónimo
+          {% else %}
+              {{ estudiante.email }}
+          {% endif %}
+        {% else %}
+            Encuestas
         {% endif %}
-        <a href="{% url 'home' %}" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">
-          Salir
-        </a>
-      </div>
+      </h1>
     </div>
-  </nav>
+</div>
   

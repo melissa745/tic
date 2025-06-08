@@ -4,11 +4,30 @@ from .models import Estudiante, Answer
 class EstudianteForm(forms.ModelForm):
     class Meta:
         model = Estudiante
-        fields = ['first_name', 'last_name', 'ci', 'cycle', 'itinerary', 'email', 'tipo_experiencia']
+        exclude = ['tipo_experiencia']
         widgets = {
-            'cycle': forms.Select(choices=Estudiante.CYCLE_CHOICES),
-            'itinerary': forms.Select(choices=Estudiante.ITINERARY_CHOICES),
-            'tipo_experiencia': forms.Select(choices=Estudiante.TIPO_EXPERIENCIA_CHOICES),
+            'ci': forms.TextInput(attrs={
+                'class': 'mt-1 block w-full px-4 py-3 bg-slate-100 border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'Ej: 1234567890'
+            }),
+            'first_name': forms.TextInput(attrs={
+                'class': 'mt-1 block w-full px-4 py-3 bg-slate-100 border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'Tu nombre'
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'mt-1 block w-full px-4 py-3 bg-slate-100 border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'Tu apellido'
+            }),
+            'cycle': forms.Select(attrs={
+                'class': 'mt-1 block w-full px-4 py-3 bg-slate-100 border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500'
+            }),
+            'itinerary': forms.Select(attrs={
+                'class': 'mt-1 block w-full px-4 py-3 bg-slate-100 border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'mt-1 block w-full px-4 py-3 bg-slate-100 border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'tu.correo@ejemplo.com'
+            }),
         }
         labels = {
             'first_name': 'Nombre',
@@ -17,7 +36,6 @@ class EstudianteForm(forms.ModelForm):
             'cycle': 'Ciclo',
             'itinerary': 'Itinerario',
             'email': 'Correo Electrónico',
-            'tipo_experiencia': 'Tipo de experiencia'
         }
 
 class AnswerForm(forms.ModelForm):

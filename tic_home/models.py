@@ -17,9 +17,8 @@ class Estudiante(models.Model):  # Cambié el nombre de User a Estudiante para e
     CYCLE_CHOICES = [(str(i), str(i)) for i in range(1, 10)]
 
     TIPO_EXPERIENCIA_CHOICES = [
-        ('rv_no_inmersiva', 'RV No Inmersiva'),
-        ('semi_inmersiva', 'Semi Inmersiva'),
-        ('inmersiva', 'Inmersiva'),
+        ('inmersiva', 'Realidad Virtual Inmersiva'),
+        ('no_inmersiva', 'Realidad Virtual No Inmersiva'),
     ]
 
     ci = models.CharField(max_length=10, unique=True, validators=[ci_validator])  
@@ -34,6 +33,10 @@ class Estudiante(models.Model):  # Cambié el nombre de User a Estudiante para e
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
     
+    @property
+    def is_anonymous(self):
+        return self.first_name.startswith('Anonimo')
+
     def has_completed_surveys(self):
         """Verifica si el usuario ha completado ambas encuestas."""
         completed_surveys = self.survey_set.filter(completed=True).values_list('survey_type', flat=True)
@@ -63,16 +66,30 @@ class Survey(models.Model):
         return f"{self.get_survey_type_display()} - {self.user.first_name}"
 
 class Question(models.Model):
-    # Quitamos null=True, blank=True para asegurar que cada pregunta pertenezca a una encuesta
-    survey_type = models.CharField(max_length=10, choices=Survey.TYPE_CHOICES)  # Nuevo campo para relacionar con el tipo de encuesta
+    SECTION_CHOICES = [
+        ('utilidad', 'Utilidad Percibida'),
+        ('facilidad', 'Facilidad de Uso Percibida'),
+        ('actitud', 'Actitud hacia el Uso'),
+        ('intencion', 'Intención de Uso'),
+    ]
+
+    QUESTION_TYPE_CHOICES = [
+        ('cerrada', 'Cerrada'),
+        ('abierta', 'Abierta'),
+    ]
+
+    survey_type = models.CharField(max_length=10, choices=Survey.TYPE_CHOICES)
+    category = models.CharField(max_length=20, choices=Estudiante.TIPO_EXPERIENCIA_CHOICES, default='inmersiva')
+    section = models.CharField(max_length=20, choices=SECTION_CHOICES, default='utilidad')
+    question_type = models.CharField(max_length=10, choices=QUESTION_TYPE_CHOICES, default='cerrada')
     text = models.TextField()
-    order = models.PositiveIntegerField(default=0)  # Para ordenar las preguntas
+    order = models.PositiveIntegerField(default=0)
 
     class Meta:
-        ordering = ['order']  # Ordenar por el campo order
+        ordering = ['category', 'survey_type', 'section', 'order']
 
     def __str__(self):
-        return self.text
+        return f"({self.get_category_display()}/{self.get_survey_type_display()}) - {self.text}"
 
 class Answer(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name="answers")  

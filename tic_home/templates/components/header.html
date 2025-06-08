@@ -1,14 +1,18 @@
 {% load static %}
-<nav class="container flex items-center justify-around">
+<div class="flex items-center gap-x-6  flex-wrap justify-around">
+  <div>
     <img
-      src={% static 'tic_home/images/logo_universidad.png' %}
-      alt="Logo de Universidad Nacional de Loja"
-      class="w-60 w-40"
+    src="{% static 'tic_home/images/logo_universidad.png' %}"
+    alt="Logo de Universidad Nacional de Loja"
+    class="h-16 w-auto"
     />
-    <img
-      src={% static 'tic_home/images/logo_computacion.jpg' %}
-      alt="Logo de Computación"
-      class="w-60 w-40"
-    />
+  </div>
 
-</nav>
+  <div>
+    <img
+    src="{% static 'tic_home/images/logo_computacion.jpg' %}"
+    alt="Logo de Computación"
+    class="h-32 w-auto"
+    />
+  </div>
+</div>

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Seleccionar Encuesta - InvestigaTEC
+{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-xl text-center">
+        <h1 class="text-3xl font-bold text-slate-900">Selección de Encuesta</h1>
+        <p class="mt-2 text-slate-600">
+            Hola, <strong>{{ estudiante.first_name }}</strong>. Por favor, selecciona la encuesta que deseas realizar.
+        </p>
+        
+        <div class="mt-8 space-y-4">
+            {% for survey in surveys %}
+                <div class="flex flex-col sm:flex-row justify-between items-center bg-slate-100 p-4 rounded-lg">
+                    <div>
+                        <h3 class="text-xl font-semibold text-slate-800">{{ survey.get_survey_type_display }}</h3>
+                        <p class="text-sm {% if survey.completed %}text-green-600 font-medium{% else %}text-amber-600 font-medium{% endif %}">
+                            Estado: {% if survey.completed %}Completada{% else %}Pendiente{% endif %}
+                        </p>
+                    </div>
+                    <div class="mt-4 sm:mt-0">
+                        {% if not survey.completed %}
+                            <a href="{% url 'survey_view' survey.survey_type %}" class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-all">
+                                Ir a la Encuesta
+                            </a>
+                        {% else %}
+                             <span class="px-5 py-2 bg-slate-200 text-slate-500 font-semibold rounded-lg">No disponible</span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-center text-slate-500">No hay encuestas disponibles en este momento.</p>
+            {% endfor %}
+
+            {% if estudiante.has_completed_surveys %}
+            <div class="pt-6 border-t border-slate-200">
+                 <a href="{% url 'view_results' %}" class="w-full block text-center px-6 py-3 bg-green-600 text-white font-bold rounded-lg shadow-md hover:bg-green-700 transition-all">
+                    Ver mis Resultados
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

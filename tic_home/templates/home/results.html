@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Resultados de la Encuesta - InvestigaTEC
+{% endblock %}
+
+{% block content %}
+<!-- Cargar la librería de gráficos -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% include "components/header.html" %}
+<div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight">Resultados Agregados</h1>
+        <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
+            A continuación se muestra un resumen de la percepción por cada variable, comparando los resultados antes y después de la experiencia de <strong>{{ estudiante.get_tipo_experiencia_display }}</strong>.
+        </p>
+        <div class="mt-8">
+            <a href="{% url 'generate_pdf_report' %}" class="px-8 py-3 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all">
+                Descargar Reporte Completo en PDF
+            </a>
+        </div>
+    </div>
+
+    {{ results_data|json_script:"results-data" }}
+
+    <!-- Sección de Encuesta PRE-EXPERIENCIA -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold text-slate-800 pb-2 mb-6 border-b-2 border-slate-200">Resultados Pre-Experiencia</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {% for section_name, data in results_data.pre.items %}
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4 text-center">{{ section_name }}</h3>
+                    <canvas id="chart-pre-{{ forloop.counter0 }}"></canvas>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Sección de Encuesta POST-EXPERIENCIA -->
+    <div>
+        <h2 class="text-3xl font-bold text-green-700 pb-2 mb-6 border-b-2 border-green-200">Resultados Post-Experiencia</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+             {% for section_name, data in results_data.post.items %}
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4 text-center">{{ section_name }}</h3>
+                    <canvas id="chart-post-{{ forloop.counter0 }}"></canvas>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    const resultsData = JSON.parse(document.getElementById('results-data').textContent);
+    
+    const chartOptions = {
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: { display: true, text: 'Nº de Respuestas', color: '#9CA3AF' },
+                ticks: { stepSize: 1, color: '#9CA3AF' },
+                grid: { color: '#4B5563' }
+            },
+            x: {
+                title: { display: true, text: 'Percepción', color: '#9CA3AF' },
+                ticks: { color: '#9CA3AF' },
+                grid: { display: false }
+            }
+        },
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed.y !== null) {
+                            label += context.parsed.y;
+                        }
+                        return label;
+                    }
+                }
+            }
+        }
+    };
+
+    const chartLabels = ['Negativa', 'Neutral', 'Positiva'];
+    const chartColors = [
+        'rgba(220, 38, 38, 0.7)',   // Rojo para Negativa
+        'rgba(251, 191, 36, 0.7)', // Amarillo para Neutral
+        'rgba(22, 163, 74, 0.7)'   // Verde para Positiva
+    ];
+    const chartBorderColors = [
+        'rgba(220, 38, 38, 1)',
+        'rgba(251, 191, 36, 1)',
+        'rgba(22, 163, 74, 1)'
+    ];
+
+    // Render PRE charts
+    Object.keys(resultsData.pre).forEach((sectionName, index) => {
+        const ctx = document.getElementById(`chart-pre-${index}`).getContext('2d');
+        const data = resultsData.pre[sectionName];
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Nº de Respuestas',
+                    data: data,
+                    backgroundColor: chartColors,
+                    borderColor: chartBorderColors,
+                    borderWidth: 1
+                }]
+            },
+            options: chartOptions
+        });
+    });
+
+    // Render POST charts
+    Object.keys(resultsData.post).forEach((sectionName, index) => {
+        const ctx = document.getElementById(`chart-post-${index}`).getContext('2d');
+        const data = resultsData.post[sectionName];
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Nº de Respuestas',
+                    data: data,
+                    backgroundColor: chartColors,
+                    borderColor: chartBorderColors,
+                    borderWidth: 1
+                }]
+            },
+            options: chartOptions
+        });
+    });
+</script>
+{% endblock %} 

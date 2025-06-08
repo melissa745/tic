@@ -1,33 +1,52 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bienvenido | Mi Aplicación</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body>
-    <div class="justify-center items-center min-h-screen">
-      <div class="container mx-auto flex items-center justify-around">
-        {% include "components/header.html" %}
-      </div>
-      <div class="flex items-center justify-center ">
-        <div class="p-10 rounded-2xl shadow-lg max-w-lg text-center bg-gray-100">
-          <h1 class="text-3xl font-bold text-gray-800">
-            ¡Bienvenido a Nuestra Aplicación!
-          </h1>
-          <p class="text-gray-600 mt-4">
-            Aquí podrás gestionar tu información de manera eficiente. Regístrate
-            ahora y empieza a explorar nuestras funcionalidades.
-          </p>
-          <a
-            href="{% url 'view_anonimo' %}"
-            class="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
-          >
-            Empezar
-          </a>
-        </div>
-      </div>
+{% extends "base.html" %}
+
+{% block title %}
+    Bienvenido al Portal de Investigación - InvestigaTEC
+{% endblock %}
+
+{% block content %}
+
+<!-- importar el HEADER -->
+ {% include "components/header.html" %}
+
+<div class="text-center">
+    <h1 class="text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight">
+        Portal de Investigación de Experiencias Inmersivas
+    </h1>
+    <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
+        Tu participación es fundamental para nuestro estudio sobre la eficacia y percepción de las tecnologías de Realidad Virtual en el aprendizaje.
+    </p>
+
+    <div class="mt-8 flex justify-center gap-4">
+        <a href="{% url 'view_anonimo' %}" class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all">
+            Comenzar Encuesta
+        </a>
     </div>
-  </body>
-</html>
+</div>
+
+<!-- <div class="mt-16 sm:mt-24">
+    <div class="relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-100 to-white h-1/2"></div>
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h2 class="text-3xl font-bold text-slate-800">Sobre el Estudio</h2>
+                        <p class="mt-4 text-slate-600">
+                            Esta plataforma forma parte de una iniciativa académica para evaluar cómo las diferentes formas de Realidad Virtual (Inmersiva y No Inmersiva) impactan en la experiencia educativa de los estudiantes.
+                        </p>
+                        <p class="mt-4 text-slate-600">
+                            Tus respuestas son confidenciales y se utilizarán exclusivamente para fines de investigación académica. El proceso consta de dos encuestas: una antes y otra después de la experiencia.
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-40 w-40 inline-block text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+{% endblock %}

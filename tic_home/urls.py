@@ -10,5 +10,6 @@ urlpatterns = [
     path('procesar-anonimo/', views.procesar_anonimo, name='procesar_anonimo'),
     path('seleccionar-tipo-experiencia/', views.seleccionar_tipo_experiencia, name='seleccionar_tipo_experiencia'),
     path('guardar_tipo/', views.guardar_tipo_experiencia, name='guardar_tipo_experiencia'),
-
+    path('resultados/', views.view_results, name='view_results'),
+    path('reporte-pdf/', views.generate_pdf_report, name='generate_pdf_report'),
 ]

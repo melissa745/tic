@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Encuesta</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2.5cm 2cm;
+        }
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            font-weight: bold;
+            color: #1a2c4e;
+        }
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            border-bottom: 2px solid #1a2c4e;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 20px;
+            color: #2c4a80;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        h3 {
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .user-info {
+            background-color: #f2f2f2;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .user-info p {
+            margin: 0;
+        }
+        .question-block {
+            margin-bottom: 15px;
+        }
+        .question-text {
+            font-weight: bold;
+        }
+        .answer-text {
+            padding-left: 20px;
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Reporte de Resultados de Encuesta</h1>
+
+    <div class="user-info">
+        {% if estudiante.is_anonymous %}
+            <p><strong>Participante:</strong> Anónimo</p>
+        {% else %}
+            <p><strong>Participante:</strong> {{ estudiante.first_name }} {{ estudiante.last_name }}</p>
+            <p><strong>Cédula:</strong> {{ estudiante.ci }}</p>
+            <p><strong>Correo:</strong> {{ estudiante.email }}</p>
+        {% endif %}
+        <p><strong>Tipo de Experiencia:</strong> {{ estudiante.get_tipo_experiencia_display }}</p>
+    </div>
+
+    <!-- Resultados PRE-EXPERIENCIA -->
+    <h2>Encuesta Pre-Experiencia</h2>
+    {% for section, questions in report_data.pre.items %}
+        <h3>{{ section }}</h3>
+        {% for item in questions %}
+            <div class="question-block">
+                <p class="question-text">{{ forloop.counter }}. {{ item.question }}</p>
+                <p class="answer-text"><strong>Respuesta:</strong> {{ item.answer }}</p>
+            </div>
+        {% endfor %}
+    {% empty %}
+        <p>No se encontraron respuestas para la encuesta Pre-Experiencia.</p>
+    {% endfor %}
+
+    <!-- Resultados POST-EXPERIENCIA -->
+    <h2>Encuesta Post-Experiencia</h2>
+    {% for section, questions in report_data.post.items %}
+        <h3>{{ section }}</h3>
+        {% for item in questions %}
+            <div class="question-block">
+                <p class="question-text">{{ forloop.counter }}. {{ item.question }}</p>
+                <p class="answer-text"><strong>Respuesta:</strong> {{ item.answer }}</p>
+            </div>
+        {% endfor %}
+    {% empty %}
+         <p>No se encontraron respuestas para la encuesta Post-Experiencia.</p>
+    {% endfor %}
+
+</body>
+</html> 

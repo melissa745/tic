@@ -1,39 +1,40 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Inicio - Encuesta</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body>
-    <div class="justify-center items-center min-h-screen">
-      <div class="container mx-auto flex items-center justify-around">
-        {% include "components/header.html" %}
-      </div>
-      <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h1 class="text-2xl font-bold text-center mb-6">
-          ¿Deseas realizar la encuesta de forma anónima?
-        </h1>
-        <form method="POST" action="{% url 'procesar_anonimo' %}" class="flex flex-col gap-4">
-          {% csrf_token %}
-          <button
-            type="submit"
-            name="anonimo"
-            value="si"
-            class="bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl"
-          >
-            Sí, anónima
-          </button>
-          <button
-            type="submit"
-            name="anonimo"
-            value="no"
-            class="bg-gray-300 hover:bg-gray-400 text-gray-900 py-2 rounded-xl"
-          >
-            No, quiero registrarme
-          </button>
+{% extends "base.html" %}
+
+{% block title %}
+    Modo de Participación - InvestigaTEC
+{% endblock %}
+
+{% block content %}
+{% include "components/header.html" %}
+<div class="max-w-xl mx-auto">
+    <div class="bg-zinc-50 p-8 sm:p-12 rounded-2xl shadow-xl text-center">
+        <h1 class="text-3xl font-bold text-slate-900">¿Cómo deseas participar?</h1>
+        <p class="mt-2 text-slate-600">
+            Puedes registrarte con tus datos o participar de forma completamente anónima. Tu elección no afectará la validez de tus respuestas.
+        </p>
+        
+        <form method="POST" action="{% url 'procesar_anonimo' %}" class="mt-8 space-y-4">
+            {% csrf_token %}
+            <button 
+                type="submit" 
+                name="anonimo" 
+                value="no" 
+                class="w-full text-left p-6 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all group"
+            >
+                <h2 class="font-semibold text-lg text-slate-800">Registrarme con mis datos</h2>
+                <p class="text-slate-500 text-sm">Usaré mi nombre y correo. Esto puede ser útil si el estudio requiere seguimiento (con tu consentimiento).</p>
+            </button>
+            
+            <button 
+                type="submit" 
+                name="anonimo" 
+                value="si" 
+                class="w-full text-left p-6 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all group"
+            >
+                <h2 class="font-semibold text-lg text-slate-800">Participar de forma anónima</h2>
+                <p class="text-slate-500 text-sm">No se solicitará ningún dato personal. Se generará un identificador único para la encuesta.</p>
+            </button>
         </form>
-      </div>
     </div>
-  </body>
-</html>
+</div>
+{% endblock %}
